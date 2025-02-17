@@ -1,0 +1,51 @@
+name: Todo
+description: Erstelle eine Aufgabe, die zu erledigen ist.
+labels: ["t: Licht- & Tontechnik"]
+title: "[Todo]: "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte gebe nach dem Präfix `[Todo]:` eine kurze, verständliche Bezeichnung der Aufgabe an.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Beschreibung *
+      description: Eine klare Beschreibung der Aufgabe.
+      placeholder: Was ist zu tun und warum?
+    validations:
+      required: true
+  
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Checkliste *
+      description: Eine Schritt-für-Schritt Anleitung, was alles erledigt werden muss, um das Todo abzuschließen.
+      placeholder: |
+        - [ ] Erster Schritt
+           - [ ] Teilaufgabe
+        - [ ] Nächster Schritt
+    validations:
+      required: true
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Deadline
+      description: |
+        Falls die Aufgabe bis zu einem gewissen Zeitpunkt erledigt sein muss.
+      placeholder: "01.01.2025"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Bitte füge passende Labels hinzu:
+        
+        _p: Priority (Priorität)  
+        a: Assignee (zugewiesene Person)  
+        t: Task Force (Arbeitsgruppe)_
