@@ -1,0 +1,27 @@
+name: Anderes
+description: Erstelle ein leeres Issue, falls keines der Vorlagen passend ist.
+labels: ["t: Licht & Tontechnik"]
+title: "[Misc]: "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte gebe nach dem Präfix `[Misc]:` einen beschreibenden Titel für dein Issue an.
+  - type: textarea
+    id: description
+    attributes:
+      label: Beschreibung
+      placeholder: ...
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Bitte füge passende Labels hinzu:
+        
+        _p: Priority (Priorität)  
+        a: Assignee (zugewiesene Person)  
+        t: Task Force (Arbeitsgruppe)_
