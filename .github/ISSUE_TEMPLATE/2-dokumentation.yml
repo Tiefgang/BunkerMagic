@@ -1,0 +1,64 @@
+name: Wiki-Eintrag
+description: Es soll ein Wiki-Eintrag erstellt oder ergänzt bzw. geändert werden.
+labels: ["t: Licht- & Tontechnik"]
+title: "[Wiki]: "
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Bitte gebe nach dem Präfix `[Wiki]:` den Titel bzw. das Thema des Wiki-Eintrags an.
+
+  - type: dropdown
+    attributes:
+      label: Änderungsart *
+      description: Welche Art von Änderung soll am Wiki vorgenommen werden?
+      multiple: false
+      options:
+        - Neuer Wiki-Eintrag
+        - Änderung eines bestehenden Wiki-Eintrags
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation
+    attributes:
+      label: Wiki-Eintrag *
+      description: Fasse zusammen, welche Inhalte dokumentiert werden sollen.
+      placeholder: |
+        # Titel
+
+        Blablabla
+    validations:
+      required: true
+
+  - type: input
+    id: path
+    attributes:
+      label: Speicherort (Pfad)
+      description: |
+        Gebe einen passenden Pfad an, an der der Wiki-Eintrag liegen soll.
+      placeholder: "Wiki/Generelle Orga/Bar/neuer-wikieintrag.md"
+    validations:
+      required: false
+
+  - type: input
+    id: old-path
+    attributes:
+      label: Existierende Datei (falls bestehender Eintrag geändert wird)
+      description: |
+        Gebe den Namen oder Pfad des zu ändernden Wiki-Eintrags an.
+      placeholder: "Wiki/Generelle Orga/Bar/alter-wikieintrag.md"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        Bitte füge passende Labels hinzu:
+        
+        _p: Priority (Priorität)  
+        a: Assignee (zugewiesene Person)  
+        t: Task Force (Arbeitsgruppe)_
+      
