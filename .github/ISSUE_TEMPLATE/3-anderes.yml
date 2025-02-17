@@ -1,6 +1,6 @@
 name: Anderes
 description: Erstelle ein leeres Issue, falls keines der Vorlagen passend ist.
-labels: ["t: Licht & Tontechnik"]
+labels: ["t: Licht- & Tontechnik"]
 title: "[Misc]: "
 
 body:
