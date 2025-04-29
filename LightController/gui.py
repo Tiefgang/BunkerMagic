@@ -3,7 +3,7 @@ from tkinter import ttk
 import threading
 
 from tools import load_devices, save_devices, ping_device
-#from artnet import ArtNetController
+from artnet import ArtNetController
 
 # GUI class
 class DeviceGUI:
@@ -27,6 +27,10 @@ class DeviceGUI:
             "Selected": 80,
             "Status": 100
         }
+
+        ## Track the currently active device and its ArtNetController
+        self.active_controller = None
+        self.active_device_mac = None
 
         for col in columns:
             self.tree.heading(col, text=col)
@@ -93,13 +97,7 @@ class DeviceGUI:
                 devices[mac]["selected"] = selected
         save_devices(devices)
 
-    ## Track the currently active device and its ArtNetController
-    #active_controller = None
-    #active_device_mac = None
-
     def on_item_double_click(self, event):
-        global active_controller, active_device_mac
-
         item_id = self.tree.identify_row(event.y)
         column_id = self.tree.identify_column(event.x)
 
@@ -120,11 +118,11 @@ class DeviceGUI:
             return  # Safety check
 
         # Stop the previous controller if a different device is clicked
-        if active_device_mac and active_device_mac != mac:
-            if active_controller:
-                active_controller.stop()
-            active_controller = None
-            active_device_mac = None
+        if self.active_device_mac and self.active_device_mac != mac:
+            if self.active_controller:
+                self.active_controller.stop()
+            self.active_controller = None
+            self.active_device_mac = None
 
         # Start a new ArtNetController for the clicked device
         config = {
@@ -132,9 +130,9 @@ class DeviceGUI:
             "rows": devices[mac]["rows"],
             "columns": devices[mac]["columns"],
         }
-        active_device_mac = mac
-        active_controller = ArtNetController(config)
-        active_controller.start()
+        self.active_device_mac = mac
+        self.active_controller = ArtNetController(config)
+        self.active_controller.start()
 
     def open_touchscreen_numpad(self, current_value):
         popup = tk.Toplevel(self.root)
@@ -222,6 +220,7 @@ class DeviceGUI:
         exit(0)
 
     def start_monitoring(self):
+        self.update_device_list()
         threading.Thread(target=self.monitor_devices, daemon=True).start()
 
     def monitor_devices(self):
@@ -230,11 +229,11 @@ class DeviceGUI:
             mac = self.tree.item(item, "values")[0]
             ip = devices.get(mac, {}).get("ip", "Unknown")
             status = "Active" if ping_device(ip) else "Inactive"
+            print(f"device {ip} set to {status}")
             devices[mac]["status"] = status
             self.tree.item(item, values=(mac, ip, self.tree.item(item, "values")[2], self.tree.item(item, "values")[3],
                                          self.tree.item(item, "values")[4], self.tree.item(item, "values")[5], status))
             self.tree.tag_configure("Active", foreground="green")
             self.tree.tag_configure("Inactive", foreground="white", background="red")
             self.tree.item(item, tags=(status,))
-        self.update_device_list()
         self.root.after(5000, self.monitor_devices)  # Refresh every 5 seconds

@@ -37,7 +37,10 @@ def get_mac_address(ip):
 # Function to ping a device
 def ping_device(ip):
     try:
+        print(f"pinging {ip}")
         result = subprocess.run(["ping", "-c", "1", "-W", "1", ip], stdout=subprocess.DEVNULL)
+        print(f"got result {result.returncode}")
         return result.returncode == 0
     except Exception:
+        print("ping excepted")
         return False
